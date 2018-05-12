@@ -1,0 +1,3 @@
+
+# An example controller showing a sample home page
+GET     /                           controllers.MainController.index
