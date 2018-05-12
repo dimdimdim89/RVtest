@@ -5,7 +5,7 @@ import io.ebean.EbeanServer;
 import java.util.List;
 
 public class AbstractDao<T> implements CommonDao<T> {
-    protected EbeanServer ebeanServer;
+    private EbeanServer ebeanServer;
     private Class<T> clazz;
 
     public AbstractDao(Class<T> clazz, EbeanServer ebeanServer) {
@@ -25,4 +25,13 @@ public class AbstractDao<T> implements CommonDao<T> {
         ebeanServer.save(entity);
     }
 
+    @Override
+    public void update(T entity) {
+        ebeanServer.update(entity);
+    }
+
+    @Override
+    public EbeanServer server() {
+        return ebeanServer;
+    }
 }

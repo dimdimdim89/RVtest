@@ -8,9 +8,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "user")
 public class User extends AbstractEntity {
+    @Column(name = "email")
     private String email;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Account> accounts = new ArrayList<>();
 
     public String getEmail() {
@@ -40,5 +41,13 @@ public class User extends AbstractEntity {
     @Override
     public int hashCode() {
         return Objects.hash(email);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + getId() + "," +
+                "email='" + getEmail() + '\'' +
+                ", accounts=" + getAccounts() +
+                '}';
     }
 }

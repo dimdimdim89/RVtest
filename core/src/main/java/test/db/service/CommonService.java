@@ -1,10 +1,8 @@
-package test.db.dao;
-
-import io.ebean.EbeanServer;
+package test.db.service;
 
 import java.util.List;
 
-public interface CommonDao<T> {
+public interface CommonService<T> {
     T getById(Long id);
 
     List<T> getAll();
@@ -12,6 +10,4 @@ public interface CommonDao<T> {
     void save(T entity);
 
     void update(T entity);
-
-    EbeanServer server();
 }

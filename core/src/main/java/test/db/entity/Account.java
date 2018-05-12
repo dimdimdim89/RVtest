@@ -57,4 +57,13 @@ public class Account extends AbstractEntity {
     public int hashCode() {
         return Objects.hash(user, moneySum, version);
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "user=" + user +
+                ", moneySum=" + moneySum +
+                ", version=" + version +
+                '}';
+    }
 }
