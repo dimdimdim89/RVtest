@@ -2,20 +2,15 @@ package controllers;
 
 import play.mvc.Controller;
 import play.mvc.Result;
-import test.Constants;
-import test.db.entity.Account;
-import test.db.service.AbstractService;
 import test.db.service.AccountService;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
 public class MainController extends Controller {
 
     @Inject
-    @Named(value = Constants.ACCOUNT_SERVICE)
     private AccountService accountService;
 
     public Result index() {

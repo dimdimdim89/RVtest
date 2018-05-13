@@ -1,7 +1,5 @@
 package test.db.entity;
 
-import io.ebean.annotation.FetchPreference;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -61,7 +59,7 @@ public class Account extends AbstractEntity {
     @Override
     public String toString() {
         return "Account{" +
-                "user=" + user +
+                "user=" + (user != null ? String.valueOf(user.getId()) : -1L) +
                 ", moneySum=" + moneySum +
                 ", version=" + version +
                 '}';
