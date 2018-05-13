@@ -4,6 +4,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import test.Constants;
 import test.db.entity.Account;
+import test.db.service.AbstractService;
 import test.db.service.AccountService;
 
 import javax.inject.Inject;
@@ -18,7 +19,7 @@ public class MainController extends Controller {
     private AccountService accountService;
 
     public Result index() {
-        return ok(Arrays.toString(accountService.getAll().stream().map(Account::getUser).toArray()));
+        return ok(Arrays.toString(accountService.getAll().toArray()));
     }
 
     public Result transfer(Long fromAccountId, Long toAccountId, Double amount) {

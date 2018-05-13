@@ -19,13 +19,13 @@ import static java.util.Objects.isNull;
 public class AccountServiceImpl extends AbstractService<Account> implements AccountService {
 
     @Inject
-    public AccountServiceImpl(@Named(value = Constants.ACCOUNT_DAO) AccountDao abstractDao) {
-        super(abstractDao);
+    public AccountServiceImpl(@Named(value = Constants.ACCOUNT_DAO) AccountDao dao) {
+        super(dao);
     }
 
     @Override
     public boolean transfer(Long fromAccountId, Long toAccountId, BigDecimal amount) {
-        return abstractDao.server().
+        return dao.server().
                 executeCall(TxScope.requiresNew().setIsolation(TxIsolation.READ_COMMITED), () -> {
                     Account fromAccount = getById(fromAccountId);
                     Account toAccount = getById(toAccountId);
