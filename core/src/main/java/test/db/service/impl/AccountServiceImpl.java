@@ -3,6 +3,7 @@ package test.db.service.impl;
 import io.ebean.TxScope;
 import io.ebean.annotation.TxIsolation;
 import test.db.dao.AccountDao;
+import test.db.entity.AbstractEntity;
 import test.db.entity.Account;
 import test.db.service.AbstractService;
 import test.db.service.AccountService;
@@ -10,6 +11,8 @@ import test.db.service.AccountService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.math.BigDecimal;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 
@@ -36,8 +39,9 @@ public class AccountServiceImpl extends AbstractService<Account> implements Acco
                     } else {
                         return false;
                     }
-                    update(fromAccount);
-                    update(toAccount);
+                    Stream.of(fromAccount, toAccount).
+                            sorted(Comparator.comparing(AbstractEntity::getId)).
+                            forEach(this::update);
                     return true;
                 });
     }
