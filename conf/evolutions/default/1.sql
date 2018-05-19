@@ -6,7 +6,7 @@ create table user(
 
 create table account(
   id int auto_increment,
-  money_sum double,
+  money_sum decimal(15,2),
   user_id int,
   version int
 );

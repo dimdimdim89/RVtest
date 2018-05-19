@@ -14,8 +14,8 @@ import test.db.service.AccountService;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static java.math.BigDecimal.ROUND_HALF_DOWN;
+import static org.junit.Assert.*;
 import static play.test.Helpers.*;
 
 public class FirstTest {
@@ -55,12 +55,12 @@ public class FirstTest {
         AccountService accountService = app.injector().instanceOf(AccountService.class);
         User firstUser = userDao.getByEmail("test11@gmail.com");
         User secondUser = userDao.getByEmail("test22@gmail.com");
-        accountService.transfer(firstUser.getAccounts().get(0).getId(), secondUser.getAccounts().get(0).getId(), BigDecimal.ONE);
+        accountService.transfer(firstUser.getAccounts().get(0).getId(), secondUser.getAccounts().get(0).getId(), BigDecimal.ONE.setScale(2, ROUND_HALF_DOWN));
         firstUser = userDao.getByEmail("test11@gmail.com");
         secondUser = userDao.getByEmail("test22@gmail.com");
 
-        assertEquals(firstUser.getAccounts().get(0).getMoneySum(), BigDecimal.TEN.subtract(new BigDecimal(1)).setScale(1));
-        assertEquals(secondUser.getAccounts().get(0).getMoneySum(), BigDecimal.TEN.add(new BigDecimal(1)).setScale(1));
+        assertEquals(firstUser.getAccounts().get(0).getMoneySum(), BigDecimal.TEN.subtract(new BigDecimal(1)).setScale(2, ROUND_HALF_DOWN));
+        assertEquals(secondUser.getAccounts().get(0).getMoneySum(), BigDecimal.TEN.add(new BigDecimal(1)).setScale(2, ROUND_HALF_DOWN));
     }
 
     @Test
@@ -79,12 +79,29 @@ public class FirstTest {
         firstUser = userDao.getByEmail("test11@gmail.com");
         secondUser = userDao.getByEmail("test22@gmail.com");
 
-        assertEquals(firstUser.getAccounts().get(0).getMoneySum(), BigDecimal.TEN.setScale(1));
-        assertEquals(secondUser.getAccounts().get(0).getMoneySum(), BigDecimal.TEN.setScale(1));
+        assertEquals(firstUser.getAccounts().get(0).getMoneySum(), BigDecimal.TEN.setScale(2, ROUND_HALF_DOWN));
+        assertEquals(secondUser.getAccounts().get(0).getMoneySum(), BigDecimal.TEN.setScale(2, ROUND_HALF_DOWN));
     }
 
+    @Test
+    public void test4() {
+        AccountService accountService = app.injector().instanceOf(AccountService.class);
+        UserDao userDao = app.injector().instanceOf(UserDao.class);
+        User firstUser = userDao.getByEmail("test11@gmail.com");
+        BigDecimal before1 = firstUser.getAccounts().get(0).getMoneySum();
+        User secondUser = userDao.getByEmail("test22@gmail.com");
+        BigDecimal before2 = secondUser.getAccounts().get(0).getMoneySum();
+        boolean result = accountService.transfer(firstUser.getAccounts().get(0).getId(), secondUser.getAccounts().get(0).getId(), new BigDecimal("-1").setScale(2, ROUND_HALF_DOWN));
+        assertFalse(result);
+        firstUser = userDao.getByEmail("test11@gmail.com");
+        BigDecimal after1 = firstUser.getAccounts().get(0).getMoneySum();
+        secondUser = userDao.getByEmail("test22@gmail.com");
+        BigDecimal after2 = secondUser.getAccounts().get(0).getMoneySum();
+        assertEquals(before1, after1);
+        assertEquals(before2, after2);
+    }
     @AfterClass
-    public static void setDown(){
+    public static void setDown() {
         stop(app);
     }
 }
